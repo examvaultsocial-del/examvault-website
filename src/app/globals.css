@@ -1,26 +1,502 @@
 @import "tailwindcss";
 
+/* ============================================
+   ExamVault Website - Global Styles (Light Mode)
+   ============================================ */
+
+/* CSS Variables - Design Tokens */
 :root {
+  /* Primary Colors - Brand Blue */
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-light: #3b82f6;
+
+  /* Secondary Colors */
+  --secondary: #10b981;
+  --secondary-dark: #059669;
+  --secondary-light: #34d399;
+
+  /* Accent Colors */
+  --accent: #f59e0b;
+  --accent-dark: #d97706;
+  --accent-light: #fbbf24;
+
+  /* Neutral Colors */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+
+  /* Semantic Colors */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* Font Family */
+  --font-cause: "Cause", cursive;
+  --font-sans: var(--font-cause);
+  --font-heading: var(--font-skriva);
 }
 
+/* ============================================
+   Note: Dark mode is disabled for this project.
+   All styling uses light mode colors above.
+   ============================================ */
+
+/* Tailwind Theme Configuration */
 @theme inline {
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-secondary-dark: var(--secondary-dark);
+  --color-accent: var(--accent);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
+  --font-sans: var(--font-cause);
+  --font-heading: var(--font-skriva);
+  --font-sketch: var(--font-skriva);
+  --font-notes: var(--font-notes);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Base Styles */
+* {
+  border-color: var(--border);
+}
+
+/* Premium Paper Texture Background - Multi-layered */
+html, body {
+  min-height: 100vh;
+  background-color: #F4F1EA;
+  background-image:
+    /* Layer 1: Cross-weave fiber pattern (very subtle) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='weave'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.005 0.02' numOctaves='1' result='turbulence'/%3E%3CfeDisplacementMap in='turbulence' in2='turbulence' scale='3' xChannelSelector='R' yChannelSelector='G'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23weave)' opacity='0.015'/%3E%3C/svg%3E"),
+    /* Layer 2: Fine grain noise */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fineGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fineGrain)' opacity='0.025'/%3E%3C/svg%3E"),
+    /* Layer 3: Large blotchy fiber texture */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='blotchy'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23blotchy)' opacity='0.012'/%3E%3C/svg%3E"),
+    /* Layer 4: Paper specks/dirt */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='specks'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23specks)'/%3E%3C/svg%3E"),
+    /* Layer 5: Vignette radial gradient (spotlight effect) */
+    radial-gradient(
+      ellipse at 50% 50%,
+      #F9F7F2 0%,
+      #F4F1EA 40%,
+      #EAE6DD 70%,
+      #E2DDD1 100%
+    );
+  background-attachment: fixed;
+  background-size: 300px 300px, 180px 180px, 250px 250px, 100px 100px, cover;
+  background-position: center, center, center, center, center;
+  background-repeat: repeat, repeat, repeat, repeat, no-repeat;
+  color: #1a1a2e;
+  font-family: var(--font-sans);
+  font-size: 1.1rem; /* Slightly larger for handwritten clarity */
+  margin: 0;
+  padding: 0;
+}
+
+/* Selection Colors */
+::selection {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Utility Classes for Animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.5s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-bounce-slow {
+  animation: bounce 2s infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Container */
+.container-custom {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* ============================================
+   Pencil Sketch Typography Effects
+   ============================================ */
+
+/* The "Pencil Sketch" effect - for main headers */
+.pencil-sketch {
+  font-family: var(--font-skriva), var(--font-cause), cursive !important;
+  font-weight: 700 !important;
+  
+  /* Real Graphite Texture Effect */
+  background-image: url("/graphite_pencil_texture.webp");
+  background-size: 200px;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: rgba(45, 45, 45, 0.95); /* Fallback with slight transparency */
+  
+  /* The magic: mix blend mode makes it look like it's ON the paper */
+  mix-blend-mode: multiply;
+  
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  filter: drop-shadow(0.5px 0.5px 0.3px rgba(0,0,0,0.2)) contrast(1.1);
+  opacity: 0.95;
+}
+
+/* Secondary "Pen" effect for smaller handwritten notes */
+.pen-note {
+  font-family: var(--font-notes), cursive;
+  color: #1A365D; /* Deep navy ink */
+  line-height: 1.6;
+}
+
+.sketch-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.sketch-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,5 Q25,2 50,5 T100,5' stroke='%232D2D2D' stroke-width='2' fill='transparent' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  z-index: -1;
+  opacity: 0.7;
+  filter: url(#pencilFilter);
+}
+
+.sketch-underline-brown {
+  position: relative;
+  display: inline-block;
+}
+
+.sketch-underline-brown::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  bottom: -6px;
+  width: 104%;
+  height: 12px;
+  background-image: url("data:image/svg+xml,%3Csvg width='200' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,10 Q40,7 80,10 T160,10 T200,10' stroke='%23A68966' stroke-width='2' fill='transparent' stroke-linecap='round' opacity='0.7'/%3E%3Cpath d='M5,13 Q50,10 100,13 T190,12' stroke='%23A68966' stroke-width='1.5' fill='transparent' stroke-linecap='round' opacity='0.5'/%3E%3Cpath d='M2,8 Q45,11 90,8 T180,9' stroke='%23A68966' stroke-width='1' fill='transparent' stroke-linecap='round' opacity='0.3'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  z-index: -1;
+  filter: url(#pencilFilter);
+}
+
+/* Golden Theme and Sketchy Underline */
+.pencil-sketch-gold {
+  font-family: var(--font-skriva);
+  color: #B59410 !important;
+  position: relative;
+  display: inline-block;
+}
+
+.sketch-underline-gold {
+  position: relative;
+  display: inline-block;
+}
+
+.sketch-underline-gold::after {
+  content: "";
+  position: absolute;
+  left: -5%;
+  bottom: -12px;
+  width: 110%; 
+  height: 25px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 25' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2,12 Q80,10 150,12 L190,12' stroke='%23B59410' stroke-width='2.5' fill='transparent' stroke-linecap='round' opacity='0.9'/%3E%3Cpath d='M10,18 Q90,16 160,18' stroke='%23B59410' stroke-width='1.8' fill='transparent' stroke-linecap='round' opacity='0.7'/%3E%3Cpath d='M185,8 L195,5 M190,12 L198,12 M185,16 L195,19' stroke='%23B59410' stroke-width='2' fill='transparent' stroke-linecap='round' opacity='0.8'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  z-index: -1;
+  filter: url(#pencilFilter);
+}
+
+/* Sketchy Ornaments */
+.sketch-burst {
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20,10 L20,2 M12,14 L5,8 M28,14 L35,8' stroke='%232D2D2D' stroke-width='2.5' fill='transparent' stroke-linecap='round' opacity='0.6'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: url(#pencilFilter);
+  pointer-events: none;
+}
+
+.sketch-curly-arrow {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10,45 Q15,35 25,40 T35,30 Q40,15 55,25' stroke='%23B59410' stroke-width='2.5' fill='transparent' stroke-linecap='round' opacity='0.9'/%3E%3Cpath d='M50,18 L55,25 L48,28' stroke='%23B59410' stroke-width='2.5' fill='transparent' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: url(#pencilFilter);
+  pointer-events: none;
+}
+
+/* ========================================================
+   Coming Soon Page Textured Sketch Cards & Visual Tokens
+   ======================================================== */
+
+.sketch-paper-card-gold {
+  position: relative;
+  border: 3.5px solid #2D2D2D;
+  border-radius: 16px 255px 18px 225px/225px 18px 255px 16px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  background-color: #FFFDF4; /* Pure soft ivory gold paper */
+  box-shadow: 6px 6px 0px 0px #2D2D2D;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sketch-paper-card-gold:hover {
+  transform: translate(-3px, -3px) rotate(-1deg);
+  box-shadow: 10px 10px 0px 0px #2D2D2D;
+}
+
+.sketch-paper-card-blue {
+  position: relative;
+  border: 3.5px solid #2D2D2D;
+  border-radius: 255px 18px 225px 18px/18px 225px 18px 255px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  background-color: #F2FAFE; /* Pure soft arctic blue paper */
+  box-shadow: 6px 6px 0px 0px #2D2D2D;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sketch-paper-card-blue:hover {
+  transform: translate(-3px, -3px) rotate(1deg);
+  box-shadow: 10px 10px 0px 0px #2D2D2D;
+}
+
+.sketch-paper-card-rose {
+  position: relative;
+  border: 3.5px solid #2D2D2D;
+  border-radius: 18px 225px 16px 255px/255px 16px 225px 18px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  background-color: #FFF8F6; /* Pure soft salmon rose paper */
+  box-shadow: 6px 6px 0px 0px #2D2D2D;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sketch-paper-card-rose:hover {
+  transform: translate(-3px, -3px) rotate(-0.5deg);
+  box-shadow: 10px 10px 0px 0px #2D2D2D;
 }

@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# documentation and design guides
+/docs/
+
+# unoptimized original heavy asset files
+public/assets/images/*.png
+public/graphite_pencil_texture.png

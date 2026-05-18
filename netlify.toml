@@ -1,0 +1,16 @@
+# Netlify Deployment Configuration for Next.js App Router
+# Netlify auto-detects Next.js and installs the official @netlify/plugin-nextjs internally.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # Force modern Node.js version
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
