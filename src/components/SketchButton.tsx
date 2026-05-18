@@ -49,6 +49,9 @@ const SketchButton: React.FC<SketchButtonProps> = ({
           borderRadius: '2px 4px 3px 6px / 4px 3px 5px 2px',
           boxShadow: variant === 'outline' ? 'inset 0 0 0 1px #B59410' : 'none',
           zIndex: 0,
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          willChange: 'filter, transform'
         }}
       />
 
@@ -61,6 +64,9 @@ const SketchButton: React.FC<SketchButtonProps> = ({
             backgroundSize: '150px 150px',
             filter: 'url(#pencilFilter)',
             borderRadius: '2px 4px 3px 6px / 4px 3px 5px 2px',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            willChange: 'filter, transform'
           }}
         />
       )}

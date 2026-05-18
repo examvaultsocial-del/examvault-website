@@ -134,7 +134,10 @@ function CheckoutSuccessContent() {
             style={{
               filter: "url(#pencilFilter)",
               borderRadius: '16px 225px 14px 255px / 255px 14px 225px 16px',
-              zIndex: 0
+              zIndex: 0,
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+              willChange: 'filter, transform'
             }}
           />
           
@@ -172,7 +175,10 @@ function CheckoutSuccessContent() {
             style={{ 
               filter: "url(#pencilFilter)", 
               borderRadius: '16px 255px 18px 225px/225px 18px 255px 16px',
-              zIndex: 0 
+              zIndex: 0,
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+              willChange: 'filter, transform'
             }}
           />
 
@@ -187,7 +193,10 @@ function CheckoutSuccessContent() {
                   style={{ 
                     filter: "url(#pencilFilter)", 
                     borderRadius: "48% 52% 50% 50% / 45% 55% 45% 55%",
-                    zIndex: 0 
+                    zIndex: 0,
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                    willChange: 'filter, transform'
                   }}
                 />
                 
@@ -226,7 +235,10 @@ function CheckoutSuccessContent() {
                 style={{ 
                   filter: "url(#pencilFilter)", 
                   borderRadius: '8px 12px 10px 14px / 12px 10px 14px 8px',
-                  zIndex: 0 
+                  zIndex: 0,
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  willChange: 'filter, transform'
                 }}
               />
               
@@ -259,7 +271,10 @@ function CheckoutSuccessContent() {
                     style={{
                       filter: "url(#pencilFilter)",
                       borderRadius: '12px 8px 14px 10px / 8px 12px 10px 14px',
-                      zIndex: 0
+                      zIndex: 0,
+                      transform: 'translateZ(0)',
+                      backfaceVisibility: 'hidden',
+                      willChange: 'filter, transform'
                     }}
                   />
                   
@@ -297,7 +312,10 @@ function CheckoutSuccessContent() {
                 style={{
                   filter: "url(#pencilFilter)",
                   borderRadius: '8px 10px 9px 11px / 10px 8px 11px 9px',
-                  zIndex: 0
+                  zIndex: 0,
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  willChange: 'filter, transform'
                 }}
               />
               

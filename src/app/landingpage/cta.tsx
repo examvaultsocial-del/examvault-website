@@ -33,7 +33,10 @@ export default function CTA() {
             style={{
               filter: 'url(#pencilFilter)',
               borderRadius: 'inherit',
-              zIndex: 0
+              zIndex: 0,
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+              willChange: 'filter, transform'
             }}
           />
           {/* Crisp Text Content */}

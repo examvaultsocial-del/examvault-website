@@ -155,6 +155,9 @@ export default function Testimonials() {
                       filter: 'drop-shadow(4px 6px 12px rgba(181, 148, 16, 0.12)) url(#heavySketch)',
                       borderRadius: index % 2 === 0 ? '20px 24px 18px 28px / 28px 18px 24px 20px' : '24px 18px 28px 20px / 20px 28px 18px 24px',
                       border: '2.5px solid #B59410',
+                      transform: 'translateZ(0)',
+                      backfaceVisibility: 'hidden',
+                      willChange: 'filter, transform'
                     }}
                   />
                   

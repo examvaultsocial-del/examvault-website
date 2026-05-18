@@ -381,6 +381,9 @@ html {
   z-index: -1;
   opacity: 0.7;
   filter: url(#pencilFilter);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: filter, transform;
 }
 
 .sketch-underline-brown {
@@ -400,6 +403,9 @@ html {
   background-repeat: no-repeat;
   z-index: -1;
   filter: url(#pencilFilter);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: filter, transform;
 }
 
 /* Golden Theme and Sketchy Underline */
@@ -427,6 +433,9 @@ html {
   background-repeat: no-repeat;
   z-index: -1;
   filter: url(#pencilFilter);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: filter, transform;
 }
 
 /* Sketchy Ornaments */
@@ -438,6 +447,9 @@ html {
   background-size: contain;
   background-repeat: no-repeat;
   filter: url(#pencilFilter);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: filter, transform;
   pointer-events: none;
 }
 
@@ -449,6 +461,9 @@ html {
   background-size: contain;
   background-repeat: no-repeat;
   filter: url(#pencilFilter);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: filter, transform;
   pointer-events: none;
 }
 

@@ -100,7 +100,10 @@ export default function Categories() {
                 filter: 'drop-shadow(4px 8px 12px rgba(138, 109, 9, 0.25)) url(#heavySketch)',
                 borderRadius: index % 2 === 0 ? '4px 8px 6px 12px / 12px 6px 8px 4px' : '10px 5px 12px 6px / 6px 12px 5px 10px',
                 border: '2.5px solid #B59410', // Forced gold color
-                background: 'transparent'
+                background: 'transparent',
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+                willChange: 'filter, transform'
               }}
             />
 
@@ -109,6 +112,9 @@ export default function Categories() {
               className="relative z-10 w-9.5 h-9.5 sm:w-12 sm:h-12 flex items-center justify-center bg-[#B59410]/10 rounded-xl group-hover:scale-110 transition-transform duration-300"
               style={{
                 filter: 'url(#heavySketch)', // Applying sketch feel to icons
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+                willChange: 'filter, transform'
               }}
             >
               <cat.icon 

@@ -14,7 +14,12 @@ export const NavbarUnderline: React.FC<NavbarUnderlineProps> = ({ className }) =
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       preserveAspectRatio="none"
-      style={{ filter: "url(#pencilFilter)" }}
+      style={{
+        filter: "url(#pencilFilter)",
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        willChange: 'filter, transform'
+      }}
     >
       <path
         fillRule="evenodd"

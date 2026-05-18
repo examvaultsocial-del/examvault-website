@@ -104,7 +104,12 @@ export default function ComingSoonContent() {
     <div className="max-w-7xl mx-auto px-6 py-6 lg:py-10 relative w-full flex flex-col items-center">
       
       {/* Decorative Hand-drawn Lightbulb (Creative active brainstorm indicator) */}
-      <div className="absolute right-[8%] lg:right-[18%] top-0 hidden md:flex flex-col items-center select-none" style={{ filter: "url(#pencilFilter)" }}>
+      <div className="absolute right-[8%] lg:right-[18%] top-0 hidden md:flex flex-col items-center select-none" style={{
+        filter: "url(#pencilFilter)",
+        transform: 'translateZ(0)',
+        backfaceVisibility: 'hidden',
+        willChange: 'filter, transform'
+      }}>
         <svg viewBox="0 0 60 60" className="w-14 h-14 stroke-[#B59410] fill-none stroke-[2.5] stroke-linecap-round stroke-linejoin-round transform rotate-12" xmlns="http://www.w3.org/2000/svg">
           {/* Bulb shape */}
           <path d="M30,10 C20,10 16,18 16,26 C16,33 21,38 24,42 L24,48 L36,48 L36,42 C39,38 44,33 44,26 C44,18 40,10 30,10 Z" />
@@ -135,6 +140,9 @@ export default function ComingSoonContent() {
             style={{
               filter: 'url(#pencilFilter)',
               borderRadius: '6px 10px 8px 12px / 10px 8px 11px 7px',
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+              willChange: 'filter, transform'
             }}
           />
           <span className="text-white relative top-[0.5px]">Under Active Development</span>

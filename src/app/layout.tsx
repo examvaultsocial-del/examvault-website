@@ -94,11 +94,11 @@ export default function RootLayout({
         {/* Invisible SVG filter for pencil displacement effect */}
         <svg style={{ display: 'none' }}>
           <filter id="pencilFilter">
-            <feTurbulence type="fractalNoise" baseFrequency="0.05 0.2" numOctaves="3" result="noise" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.05 0.2" numOctaves="1" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G" />
           </filter>
           <filter id="heavySketch">
-            <feTurbulence type="fractalNoise" baseFrequency="0.05 0.15" numOctaves="3" result="noise" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.05 0.15" numOctaves="1" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </svg>

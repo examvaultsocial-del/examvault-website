@@ -730,7 +730,12 @@ function ProductsPageContent() {
                                   {/* Solid background with hand-drawn sketchy filter applied ONLY to the tag, leaving text clear */}
                                   <span 
                                     className={`absolute inset-0 rounded-[6px] border ${style.bgClass} ${style.borderClass} pointer-events-none`}
-                                    style={{ filter: "url(#heavySketch)" }}
+                                    style={{
+                                      filter: "url(#heavySketch)",
+                                      transform: 'translateZ(0)',
+                                      backfaceVisibility: 'hidden',
+                                      willChange: 'filter, transform'
+                                    }}
                                   />
                                   <span className="relative z-10 flex items-center gap-0.5 text-white">
                                     {style.icon}
@@ -845,7 +850,12 @@ function ProductsPageContent() {
                                     {/* Solid background with hand-drawn sketchy filter applied ONLY to the tag, leaving text clear */}
                                     <span 
                                       className={`absolute inset-0 rounded-[6px] border ${style.bgClass} ${style.borderClass} pointer-events-none`}
-                                      style={{ filter: "url(#heavySketch)" }}
+                                      style={{
+                                        filter: "url(#heavySketch)",
+                                        transform: 'translateZ(0)',
+                                        backfaceVisibility: 'hidden',
+                                        willChange: 'filter, transform'
+                                      }}
                                     />
                                     <span className="relative z-10 flex items-center gap-1 text-white">
                                       {style.icon}

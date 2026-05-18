@@ -244,6 +244,9 @@ export const CartDrawer: React.FC = () => {
                 style={{
                   filter: 'url(#heavySketch)',
                   borderRadius: "3px 5px 2px 4px / 4px 3px 5px 2px",
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  willChange: 'filter, transform'
                 }}
               />
               <span className="relative z-10 block">
