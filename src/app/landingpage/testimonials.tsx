@@ -102,13 +102,7 @@ export default function Testimonials() {
 
   return (
     <section className="pt-4 pb-10 px-6 max-w-7xl mx-auto w-full relative overflow-hidden">
-      {/* Local high-intensity sketch filter */}
-      <svg className="absolute w-0 h-0 pointer-events-none">
-        <filter id="heavySketch">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05 0.15" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
+
 
       {/* Section Header */}
       <div className="text-center mb-10">
@@ -162,19 +156,35 @@ export default function Testimonials() {
                   />
                   
                   {/* Content Wrapper */}
-                  <div className="relative z-10 flex flex-col h-full justify-between">
+                  <div className="relative z-10 flex flex-col h-full justify-between pt-2">
+                    {/* Hand-Drawn Large Quotation Mark */}
+                    <svg 
+                      className="absolute -top-4 -left-2 w-8 h-8 text-[#B59410]/20 pointer-events-none transform -rotate-12 select-none" 
+                      viewBox="0 0 24 24" 
+                      fill="currentColor"
+                    >
+                      <path d="M11.1 12.1c0-1.9-.7-3.6-2.1-4.9-1.4-1.3-3.2-2-5.4-2.1-.2 0-.4.1-.5.3s-.1.4 0 .5c1.8.7 3.1 1.8 3.9 3.2C7.8 10.5 8 12 7.6 13.6c-.4 1.6-1.5 2.8-3.1 3.5-.2.1-.3.3-.3.5s.1.4.3.5c1.4.6 3 1.1 4.7 1.4.2 0 .4-.1.5-.3s.1-.4 0-.5c-1-.2-1.9-.5-2.7-.9.9-.6 1.7-1.5 2.2-2.7.3-1.1.5-2.3.5-3.5zm11.2 0c0-1.9-.7-3.6-2.1-4.9-1.4-1.3-3.2-2-5.4-2.1-.2 0-.4.1-.5.3s-.1.4 0 .5c1.8.7 3.1 1.8 3.9 3.2.8 1.4 1 2.9.6 4.5-.4 1.6-1.5 2.8-3.1 3.5-.2.1-.3.3-.3.5s.1.4.3.5c1.4.6 3 1.1 4.7 1.4.2 0 .4-.1.5-.3s.1-.4 0-.5c-1-.2-1.9-.5-2.7-.9.9-.6 1.7-1.5 2.2-2.7.3-1.1.5-2.3.5-3.5z" />
+                    </svg>
+
                     <div>
-                      {/* Quote */}
-                      <p className="text-base text-[#1A1A2E] font-medium leading-relaxed italic mb-4">
-                        {t.quote}
+                      {/* Quote (Stripping redundant outer quotes) */}
+                      <p className="text-base text-[#1A1A2E] font-medium leading-relaxed italic mb-4 pl-3 relative z-10">
+                        {t.quote.replace(/^"|"$/g, '')}
                       </p>
 
-                      {/* Stars */}
-                      <div className="flex gap-1 mb-2">
+                      {/* Stars with Wave Motion Hover effect */}
+                      <div className="flex gap-1 mb-2 pl-3">
                         {[...Array(5)].map((_, i) => (
                           <Star 
                             key={i} 
-                            className={`w-4 h-4 ${i < t.rating ? 'text-[#B59410] fill-[#B59410]' : 'text-gray-200'}`} 
+                            className={`w-4 h-4 transition-all duration-500 ease-out group-hover:scale-125 group-hover:rotate-[15deg] ${
+                              i < t.rating 
+                                ? 'text-[#B59410] fill-[#B59410]' 
+                                : 'text-gray-200'
+                            }`}
+                            style={{
+                              transitionDelay: `${i * 60}ms`
+                            }}
                           />
                         ))}
                       </div>

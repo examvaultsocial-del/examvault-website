@@ -11,78 +11,9 @@ import Footer from "@/app/landingpage/footer";
 import { useCart } from "@/components/providers/CartProvider";
 
 import { allProducts } from "@/lib/products";
+import { getTagStyles } from "@/lib/tagStyles";
+import { slugify } from "@/lib/utils";
 
-// Custom styling helper to render creative, dynamic, color-coded tag badges with contextual inline vector icons
-const getTagStyles = (tag: string) => {
-  const normalized = tag.toLowerCase().trim();
-  
-  if (normalized === "pdf") {
-    return {
-      bgClass: "bg-[#D32F2F]",
-      borderClass: "border-[#B71C1C]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "video") {
-    return {
-      bgClass: "bg-[#D32F2F]",
-      borderClass: "border-[#B71C1C]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "best seller" || normalized === "flagship") {
-    return {
-      bgClass: "bg-[#B59410]",
-      borderClass: "border-[#A37E0B]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "audio book" || normalized === "audiobook") {
-    return {
-      bgClass: "bg-[#137333]",
-      borderClass: "border-[#0F5D29]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "new arrival" || normalized === "new") {
-    return {
-      bgClass: "bg-[#0066CC]",
-      borderClass: "border-[#0052A3]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-        </svg>
-      )
-    };
-  }
-  
-  return {
-    bgClass: "bg-[#4A5568]",
-    borderClass: "border-[#2D3748]",
-    icon: (
-      <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-      </svg>
-    )
-  };
-};
 
 function ProductsPageContent() {
   const router = useRouter();
@@ -680,28 +611,47 @@ function ProductsPageContent() {
                 viewMode === "grid" ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {paginatedProducts.map((product) => (
-                      <Link href={`/products/${product.id}`} key={product.id} className="group flex flex-col bg-white border-2 border-[#E5E5E5] rounded-2xl overflow-hidden hover:border-[#B59410] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300">
+                      <Link href={`/products/${slugify(product.title)}`} key={product.id} className="group flex flex-col bg-white border-2 border-[#E5E5E5] rounded-2xl overflow-hidden hover:border-[#B59410] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300">
                         
-                        {/* Thumbnail Container */}
-                        <div className="relative aspect-[1.45] bg-[#F8F9FA] p-4 flex items-center justify-center border-b-2 border-[#E5E5E5] overflow-hidden group-hover:border-[#B59410]/30 transition-colors">
-                          {/* Using the PDF Placeholder Image as base layer */}
-                          <Image 
-                            src="/assets/images/placeholder-pdfimage.webp"
-                            alt={product.title}
-                            fill
-                            className="object-contain p-3 drop-shadow-md group-hover:scale-105 transition-transform duration-500"
-                          />
-                          
+                        {/* Thumbnail Container - 3D Notebook Stage */}
+                        <div className="relative aspect-[1.45] bg-[#F8F9FA] p-4 flex items-center justify-center border-b-2 border-[#E5E5E5] overflow-hidden group-hover:border-[#B59410]/30 transition-colors [perspective:1000px]">
+                          {/* 3D Notebook Object */}
+                          <div 
+                            className="relative w-[50%] aspect-[3/4.2] bg-[#FDFBF7] shadow-md transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] [transform-style:preserve-3d] origin-left group-hover:shadow-[12px_15px_20px_rgba(26,26,46,0.12)] group-hover:[transform:rotateY(-18deg)_scale(1.05)_translateY(-4px)]"
+                            style={{
+                              border: '2px solid #B59410',
+                              borderRadius: '4px 10px 10px 4px',
+                              willChange: 'transform'
+                            }}
+                          >
+                            <Image 
+                              src="/assets/images/placeholder-pdfimage.webp"
+                              alt={product.title}
+                              fill
+                              className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
+                            />
+                            
+                            {/* Book Spine Shadow */}
+                            <div className="absolute inset-y-0 left-0 w-[12%] bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-10" />
+                            <div className="absolute inset-y-0 left-[10%] w-[1px] bg-white/20 pointer-events-none z-10" />
+                            <div className="absolute inset-y-0 left-[11%] w-[1px] bg-black/10 pointer-events-none z-10" />
+                            
+                            {/* Pages Thickness (Right Edge) */}
+                            <div 
+                              className="absolute right-0 top-[1.5px] bottom-[1.5px] w-[6px] bg-[#F4EFE0] shadow-inner origin-left transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                              style={{
+                                transform: 'rotateY(90deg) translateZ(1px)',
+                                backgroundImage: 'repeating-linear-gradient(90deg, #E5D5A5 0px, #E5D5A5 1px, transparent 1px, transparent 3px)',
+                                borderLeft: '1px solid rgba(181, 148, 16, 0.2)',
+                                borderRadius: '0 2px 2px 0'
+                              }}
+                            />
+                          </div>
+
                           {/* Custom notebook text layer for dynamically visual and creative covers */}
-                          <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center select-none pointer-events-none">
-                            <span className="text-[9px] tracking-widest uppercase font-bold text-[#888]/80 mb-0.5">
-                              {product.exam.toUpperCase()} PREP
-                            </span>
-                            <span className="text-xs font-bold text-[#2d2d2d] leading-snug px-2 bg-white/40 backdrop-blur-[1px] border border-[#d8d3c9]/40 rounded py-0.5 line-clamp-2 max-w-[85%] shadow-sm">
+                          <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
+                            <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
                               {product.subject.toUpperCase()}
-                            </span>
-                            <span className="text-[8px] uppercase tracking-wider font-semibold text-[#B59410] mt-1">
-                              {product.format}
                             </span>
                           </div>
 
@@ -792,27 +742,46 @@ function ProductsPageContent() {
                 ) : (
                   <div className="flex flex-col gap-4">
                     {paginatedProducts.map((product) => (
-                      <Link href={`/products/${product.id}`} key={product.id} className="group flex flex-col sm:flex-row bg-white border-2 border-[#E5E5E5] rounded-2xl overflow-hidden hover:border-[#B59410] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300">
-                        
-                        {/* Thumbnail Container (Left side in horizontal layout) */}
-                        <div className="relative w-full sm:w-44 md:w-52 aspect-[4/3.8] sm:aspect-[4/3.8] bg-[#F8F9FA] p-4 flex items-center justify-center border-b-2 sm:border-b-0 sm:border-r-2 border-[#E5E5E5] overflow-hidden group-hover:border-[#B59410]/30 flex-shrink-0 transition-colors">
-                          <Image 
-                            src="/assets/images/placeholder-pdfimage.webp"
-                            alt={product.title}
-                            fill
-                            className="object-contain p-3 drop-shadow-md group-hover:scale-105 transition-transform duration-500"
-                          />
-                          
+                      <Link href={`/products/${slugify(product.title)}`} key={product.id} className="group flex flex-col sm:flex-row bg-white border-2 border-[#E5E5E5] rounded-2xl overflow-hidden hover:border-[#B59410] hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300">
+                                         {/* Thumbnail Container (Left side in horizontal layout) - 3D Notebook Stage */}
+                        <div className="relative w-full sm:w-44 md:w-52 aspect-[4/3.8] sm:aspect-[4/3.8] bg-[#F8F9FA] p-4 flex items-center justify-center border-b-2 sm:border-b-0 sm:border-r-2 border-[#E5E5E5] overflow-hidden group-hover:border-[#B59410]/30 flex-shrink-0 transition-colors [perspective:1000px]">
+                          {/* 3D Notebook Object */}
+                          <div 
+                            className="relative w-[48%] aspect-[3/4.2] bg-[#FDFBF7] shadow-md transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] [transform-style:preserve-3d] origin-left group-hover:shadow-[12px_15px_20px_rgba(26,26,46,0.12)] group-hover:[transform:rotateY(-18deg)_scale(1.05)_translateY(-4px)]"
+                            style={{
+                              border: '2px solid #B59410',
+                              borderRadius: '4px 10px 10px 4px',
+                              willChange: 'transform'
+                            }}
+                          >
+                            <Image 
+                              src="/assets/images/placeholder-pdfimage.webp"
+                              alt={product.title}
+                              fill
+                              className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
+                            />
+                            
+                            {/* Book Spine Shadow */}
+                            <div className="absolute inset-y-0 left-0 w-[12%] bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-10" />
+                            <div className="absolute inset-y-0 left-[10%] w-[1px] bg-white/20 pointer-events-none z-10" />
+                            <div className="absolute inset-y-0 left-[11%] w-[1px] bg-black/10 pointer-events-none z-10" />
+                            
+                            {/* Pages Thickness (Right Edge) */}
+                            <div 
+                              className="absolute right-0 top-[1.5px] bottom-[1.5px] w-[6px] bg-[#F4EFE0] shadow-inner origin-left transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                              style={{
+                                transform: 'rotateY(90deg) translateZ(1px)',
+                                backgroundImage: 'repeating-linear-gradient(90deg, #E5D5A5 0px, #E5D5A5 1px, transparent 1px, transparent 3px)',
+                                borderLeft: '1px solid rgba(181, 148, 16, 0.2)',
+                                borderRadius: '0 2px 2px 0'
+                              }}
+                            />
+                          </div>
+
                           {/* Custom notebook text layer */}
-                          <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none pointer-events-none">
-                            <span className="text-[9px] tracking-widest uppercase font-bold text-[#888]/80 mb-1">
-                              {product.exam.toUpperCase()} PREP
-                            </span>
-                            <span className="text-xs font-bold text-[#2d2d2d] leading-snug px-2 bg-white/40 backdrop-blur-[1px] border border-[#d8d3c9]/40 rounded py-1 line-clamp-3 max-w-[85%] shadow-sm">
+                          <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
+                            <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
                               {product.subject.toUpperCase()}
-                            </span>
-                            <span className="text-[8px] uppercase tracking-wider font-semibold text-[#B59410] mt-1">
-                              {product.format}
                             </span>
                           </div>
 

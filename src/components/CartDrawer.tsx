@@ -15,6 +15,13 @@ export const CartDrawer: React.FC = () => {
 
   useEffect(() => {
     setIsMounted(true);
+    // Preload Razorpay Checkout SDK Script
+    if (typeof window !== "undefined" && !(window as any).Razorpay) {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
   }, []);
 
   // Prevent background body scroll when cart is open
@@ -93,20 +100,8 @@ export const CartDrawer: React.FC = () => {
       }
 
       // Step 2: Open Razorpay Payment Overlay
-      // We will load the Razorpay SDK dynamically if not already loaded
-      const loadRazorpay = () => {
-        return new Promise((resolve) => {
-          const script = document.createElement("script");
-          script.src = "https://checkout.razorpay.com/v1/checkout.js";
-          script.onload = () => resolve(true);
-          script.onerror = () => resolve(false);
-          document.body.appendChild(script);
-        });
-      };
-
-      const sdkLoaded = await loadRazorpay();
-      if (!sdkLoaded) {
-        alert("Secure Payment SDK failed to load. Are you offline?");
+      if (!(window as any).Razorpay) {
+        alert("Secure Payment SDK is still loading or failed to load. Please check your internet connection.");
         setIsSubmitting(false);
         return;
       }
@@ -218,14 +213,14 @@ export const CartDrawer: React.FC = () => {
 
         {/* Content Section */}
         {cart.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[#FDFBF7]">
-            <div className="relative w-36 h-36 mb-6 flex items-center justify-center border-4 border-dashed border-[#2D2D2D]/20 rounded-full overflow-hidden bg-white/20">
+          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center bg-[#FDFBF7] group/empty">
+            <div className="relative w-36 h-36 mb-6 flex items-center justify-center border-4 border-dashed border-[#2D2D2D]/20 rounded-full overflow-hidden bg-white/20 shadow-inner">
               <Image 
                 src="/assets/process-icons/cart-store.svg"
                 alt="Empty Cart Illustration"
                 width={112}
                 height={112}
-                className="w-24 h-24 object-contain mix-blend-multiply transition-transform duration-500 hover:scale-110"
+                className="w-24 h-24 object-contain mix-blend-multiply transition-all duration-700 ease-out group-hover/empty:scale-110 group-hover/empty:rotate-[8deg] will-change-transform"
               />
             </div>
             <h3 className="text-xl font-sketch font-bold text-[#2D2D2D] mb-2">Your Cart is Empty</h3>
@@ -287,10 +282,10 @@ export const CartDrawer: React.FC = () => {
                     {/* Delete Item Button */}
                     <button
                       onClick={() => removeFromCart(item.id)}
-                      className="p-1 rounded text-red-500 hover:bg-red-50 transition-colors group shrink-0"
+                      className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-all duration-300 group/trash shrink-0 active:scale-90"
                       title="Remove study guide"
                     >
-                      <Trash2 className="w-4 h-4 group-hover:scale-105 transition-transform" />
+                      <Trash2 className="w-4 h-4 transition-all duration-300 ease-out group-hover/trash:scale-110 group-hover/trash:rotate-[15deg] group-active/trash:-rotate-[15deg]" />
                     </button>
                   </div>
 
@@ -433,13 +428,7 @@ export const CartDrawer: React.FC = () => {
           </>
         )}
       </div>
-      {/* Local high-intensity sketch filter */}
-      <svg className="absolute w-0 h-0 pointer-events-none">
-        <filter id="heavySketch">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05 0.15" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
+
     </>
   );
 };

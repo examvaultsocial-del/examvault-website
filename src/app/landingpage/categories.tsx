@@ -66,13 +66,7 @@ const categories = [
 export default function Categories() {
   return (
     <section className="pt-0 pb-10 px-6 max-w-7xl mx-auto w-full relative">
-      {/* Local high-intensity sketch filter for more pronounced hand-drawn borders */}
-      <svg className="absolute w-0 h-0 pointer-events-none">
-        <filter id="heavySketch">
-          <feTurbulence type="fractalNoise" baseFrequency="0.05 0.15" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
-        </filter>
-      </svg>
+
 
       {/* Section Header */}
       <div className="text-center mb-8">

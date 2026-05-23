@@ -98,7 +98,7 @@ export default function RootLayout({
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" xChannelSelector="R" yChannelSelector="G" />
           </filter>
           <filter id="heavySketch">
-            <feTurbulence type="fractalNoise" baseFrequency="0.05 0.15" numOctaves="1" result="noise" />
+            <feTurbulence type="fractalNoise" baseFrequency="0.05 0.15" numOctaves="3" result="noise" />
             <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </svg>

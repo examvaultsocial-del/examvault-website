@@ -72,32 +72,48 @@ export default function PopularMaterials() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {materials.map((item, index) => (
           <div key={index} className="flex flex-col space-y-2 group cursor-pointer">
-            {/* Book Thumbnail Container - Real Book Feel */}
-            <div className="relative group">
-              {/* Main Book Cover */}
+            {/* Book Thumbnail Container - Real 3D Book Feel */}
+            <div className="relative group [perspective:1000px] w-full aspect-[3/4.2]">
+              {/* Main Book Structure */}
               <div 
-                className="relative aspect-[3/4.2] w-full bg-[#FDFBF7] overflow-hidden shadow-md group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500"
+                className="relative w-full h-full bg-[#FDFBF7] shadow-md transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] [transform-style:preserve-3d] origin-left group-hover:shadow-[15px_20px_25px_rgba(26,26,46,0.15)] group-hover:[transform:rotateY(-16deg)_scale(1.02)_translateY(-6px)]"
                 style={{
                   border: '2px solid #B59410',
-                  borderRadius: '4px 12px 12px 4px' // Spine feel
+                  borderRadius: '4px 12px 12px 4px', // Spine feel
+                  willChange: 'transform'
                 }}
               >
-                <Image 
-                  src={item.image} 
-                  alt={item.title}
-                  fill
-                  className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
-                />
-                
-                {/* Book Spine Shadow Effect */}
-                <div className="absolute inset-y-0 left-0 w-[12%] bg-gradient-to-r from-black/20 via-black/5 to-transparent pointer-events-none" />
-                
-                {/* Glossy/Paper Texture Overlay */}
-                <div className="absolute inset-0 bg-white/5 mix-blend-overlay pointer-events-none" />
-              </div>
+                {/* Front Cover Image */}
+                <div className="absolute inset-0 w-full h-full overflow-hidden" style={{ borderRadius: '2px 10px 10px 2px' }}>
+                  <Image 
+                    src={item.image} 
+                    alt={item.title}
+                    fill
+                    className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
+                  />
+                  
+                  {/* Book Spine Shadow Effect */}
+                  <div className="absolute inset-y-0 left-0 w-[12%] bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-10" />
+                  
+                  {/* Spine Highlight / Crease */}
+                  <div className="absolute inset-y-0 left-[10%] w-[1px] bg-white/20 pointer-events-none z-10" />
+                  <div className="absolute inset-y-0 left-[11%] w-[1px] bg-black/10 pointer-events-none z-10" />
+                  
+                  {/* Glossy/Paper Texture Overlay */}
+                  <div className="absolute inset-0 bg-white/5 mix-blend-overlay pointer-events-none" />
+                </div>
 
-              {/* 3D Thickness Effect (The "Pages" side) */}
-              <div className="absolute -right-[3px] top-[4px] bottom-[4px] w-[3px] bg-[#E5D5A5] rounded-r-sm shadow-inner opacity-60 group-hover:opacity-100 transition-opacity" />
+                {/* 3D Pages Thickness (Right Edge) */}
+                <div 
+                  className="absolute right-0 top-[2px] bottom-[2px] w-[8px] bg-[#F4EFE0] shadow-inner origin-left transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                  style={{
+                    transform: 'rotateY(90deg) translateZ(1px)',
+                    backgroundImage: 'repeating-linear-gradient(90deg, #E5D5A5 0px, #E5D5A5 1px, transparent 1px, transparent 3px)',
+                    borderLeft: '1px solid rgba(181, 148, 16, 0.2)',
+                    borderRadius: '0 2px 2px 0'
+                  }}
+                />
+              </div>
             </div>
 
             {/* Book Details */}

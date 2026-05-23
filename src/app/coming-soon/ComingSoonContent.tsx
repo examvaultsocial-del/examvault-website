@@ -3,6 +3,7 @@
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Sparkles } from "lucide-react";
 import SketchButton from "@/components/SketchButton";
 
@@ -28,14 +29,7 @@ export default function ComingSoonContent() {
         "Daily challenge practice questions",
         "Instant alerts on study guides release"
       ],
-      logo: (
-        <svg viewBox="0 0 60 60" className="w-10 h-10 stroke-[#25D366] fill-none stroke-[2.5] stroke-linecap-round stroke-linejoin-round" xmlns="http://www.w3.org/2000/svg">
-          {/* Main sketched speech bubble with phone contour */}
-          <path d="M30,11 C19.5,11 11,19 11,29 C11,35 14,40.5 18,44 L15,53 L24.5,50 C26.2,50.7 28.1,51 30,51 C40.5,51 49,43 49,33 C49,23 40.5,11 30,11 Z" />
-          {/* Sketched telephone receiver inside */}
-          <path d="M22,23 C22.5,23.5 24,25.5 24.5,26.5 C25,27.5 24.5,28.5 24,29 C23.5,29.5 23,30 23.5,31 C24,32 25.5,34.5 27,36 C28.5,37.5 30,38.5 31,38 C32,37.5 32.5,37 33.5,36.5 C34.5,36 35.5,36.5 36.5,37 C37.5,37.5 39.5,39 40,39.5 C40.5,40 40,41 39,41.5 C38,42 34.5,42.5 32,40 C29.5,37.5 25.5,32.5 24,30 C22.5,27.5 22,24 23,23 C24,22 21.5,22.5 22,23 Z" />
-        </svg>
-      )
+      icon: "/assets/images/junior-landingpage/social-icons/whatsapp-icon.svg"
     },
     {
       name: "Telegram Channel",
@@ -53,16 +47,7 @@ export default function ComingSoonContent() {
         "Weekly standard strategy checklists",
         "Interactive preparation quiz analytics"
       ],
-      logo: (
-        <svg viewBox="0 0 60 60" className="w-10 h-10 stroke-[#0088cc] fill-none stroke-[2.5] stroke-linecap-round stroke-linejoin-round" xmlns="http://www.w3.org/2000/svg">
-          {/* Hand-drawn circular border */}
-          <circle cx="30" cy="30" r="21" className="opacity-80" />
-          {/* Sketched paper airplane */}
-          <path d="M44,16 L14,30 L27,35 L44,16 Z" />
-          <path d="M27,35 L33,45 L44,16 Z" />
-          <path d="M27,35 L31,39" />
-        </svg>
-      )
+      icon: "/assets/images/junior-landingpage/social-icons/telegram-icon.svg"
     },
     {
       name: "Instagram Official",
@@ -80,23 +65,7 @@ export default function ComingSoonContent() {
         "Weekly memory tricks & revision hacks",
         "Behind-the-scenes visual updates"
       ],
-      logo: (
-        <svg viewBox="0 0 60 60" className="w-10 h-10 stroke-[2.5] stroke-linecap-round stroke-linejoin-round fill-none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="instaGradCS" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#F9CE34" />
-              <stop offset="30%" stopColor="#EE2A7B" />
-              <stop offset="100%" stopColor="#6228D7" />
-            </linearGradient>
-          </defs>
-          {/* Sketched outer frame camera */}
-          <rect x="14" y="14" width="32" height="32" rx="9" stroke="url(#instaGradCS)" />
-          {/* Sketched outer camera lens ring */}
-          <circle cx="30" cy="30" r="9" stroke="url(#instaGradCS)" />
-          {/* Sketched flash dot */}
-          <circle cx="40" cy="20" r="1.5" fill="url(#instaGradCS)" stroke="url(#instaGradCS)" />
-        </svg>
-      )
+      icon: "/assets/images/junior-landingpage/social-icons/instagram-icon.svg"
     }
   ];
 
@@ -174,10 +143,16 @@ export default function ComingSoonContent() {
             <div className="space-y-4">
               {/* Logo Backing */}
               <div className="flex items-center justify-between">
-                <div 
+                <div
                   className={`${comm.iconBg} w-14 h-14 rounded-2xl flex items-center justify-center border-2 border-[#2D2D2D] shadow-sm transform -rotate-3 group-hover:rotate-3 transition-transform duration-300`}
                 >
-                  {comm.logo}
+                  <Image
+                    src={comm.icon}
+                    alt={comm.name}
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 object-contain"
+                  />
                 </div>
                 <span className="text-[10px] uppercase tracking-widest font-extrabold text-[#4A4A4A] opacity-75">
                   Official Join

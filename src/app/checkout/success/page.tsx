@@ -20,7 +20,7 @@ function CheckoutSuccessContent() {
   // Or automatically default to mock if accessed directly without transaction parameters
   const rawOrderId = searchParams.get("order_id");
   const rawEmail = searchParams.get("email");
-  const isMock = searchParams.get("mock") === "true" || (!rawOrderId && !rawEmail);
+  const isMock = searchParams.get("mock") === "true" || (process.env.NODE_ENV !== "production" && !rawOrderId && !rawEmail);
 
   const orderId = rawOrderId || "order_mock_123456";
   const paymentId = searchParams.get("payment_id") || "pay_mock_7891011";
@@ -130,7 +130,7 @@ function CheckoutSuccessContent() {
         <div className="relative p-6 max-w-md w-full text-center">
           {/* Wobbly backing error card container */}
           <div 
-            className="absolute inset-0 border-3 border-[#2D2D2D] bg-[#FFF8F8] shadow-[5px_5px_0px_0px_#2D2D2D] pointer-events-none"
+            className="absolute inset-0 border-[3px] border-[#2D2D2D] bg-[#FFF8F8] shadow-[5px_5px_0px_0px_#2D2D2D] pointer-events-none"
             style={{
               filter: "url(#pencilFilter)",
               borderRadius: '16px 225px 14px 255px / 255px 14px 225px 16px',
@@ -171,7 +171,7 @@ function CheckoutSuccessContent() {
         <div className="relative p-4 md:p-6 mb-6">
           {/* Wobbly backing receipt background card */}
           <div 
-            className="absolute inset-0 border-3 border-[#2D2D2D] bg-[#FFFDF4] shadow-[6px_6px_0px_0px_#2D2D2D] pointer-events-none" 
+            className="absolute inset-0 border-[3px] border-[#2D2D2D] bg-[#FFFDF4] shadow-[6px_6px_0px_0px_#2D2D2D] pointer-events-none" 
             style={{ 
               filter: "url(#pencilFilter)", 
               borderRadius: '16px 255px 18px 225px/225px 18px 255px 16px',
@@ -189,7 +189,7 @@ function CheckoutSuccessContent() {
               <div className="relative w-20 h-20 md:w-24 md:h-24 mx-auto mb-3.5">
                 {/* Sketched circle backdrop shadow */}
                 <div 
-                  className="absolute inset-0 border-3 border-[#2D2D2D] bg-[#FAF8F5] shadow-[3px_3px_0px_0px_#2D2D2D]" 
+                  className="absolute inset-0 border-[3px] border-[#2D2D2D] bg-[#FAF8F5] shadow-[3px_3px_0px_0px_#2D2D2D]" 
                   style={{ 
                     filter: "url(#pencilFilter)", 
                     borderRadius: "48% 52% 50% 50% / 45% 55% 45% 55%",

@@ -71,33 +71,45 @@ export default function SecureDownloadPage() {
         body: JSON.stringify({ token }),
       });
 
-      const data = await res.json();
-      if (!res.ok || !data.success) {
-        throw new Error(data.error || "Failed to process download link verification.");
+      if (!res.ok) {
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await res.json();
+          throw new Error(data.error || "Failed to process download link verification.");
+        } else {
+          throw new Error("Failed to process download link verification.");
+        }
       }
 
-      // Convert base64 bytes to blob and trigger real browser download attachment
-      const byteCharacters = atob(data.fileDataBase64);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: "application/pdf" });
-      
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = data.fileName;
-      document.body.appendChild(a);
-      a.click();
-      
-      // Cleanup
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/pdf")) {
+        const blob = await res.blob();
+        
+        const contentDisposition = res.headers.get("Content-Disposition");
+        let fileName = `${bookTitle.replace(/[^a-zA-Z0-9]/g, "_")}_Visual_Notes.pdf` || "Visual_Notes.pdf";
+        if (contentDisposition) {
+          const fileNameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+          if (fileNameMatch && fileNameMatch[1]) {
+            fileName = fileNameMatch[1];
+          }
+        }
 
-      setSuccess(true);
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        setSuccess(true);
+      } else {
+        throw new Error("Unexpected response format from download server.");
+      }
     } catch (err: any) {
       console.error("Download error:", err);
       setError(err.message || "Download request failed. The link may have just been locked.");

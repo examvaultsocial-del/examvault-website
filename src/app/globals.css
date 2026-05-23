@@ -6,10 +6,10 @@
 
 /* CSS Variables - Design Tokens */
 :root {
-  /* Primary Colors - Brand Blue */
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --primary-light: #3b82f6;
+  /* Primary Colors - Brand Gold */
+  --primary: #B59410;
+  --primary-dark: #9A7D0D;
+  --primary-light: #D4B325;
 
   /* Secondary Colors */
   --secondary: #10b981;
@@ -30,7 +30,7 @@
   --muted-foreground: #64748b;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #2563eb;
+  --ring: #B59410;
 
   /* Semantic Colors */
   --success: #22c55e;

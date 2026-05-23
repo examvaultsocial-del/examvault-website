@@ -1,9 +1,50 @@
 import { NextResponse } from "next/server";
 import { supabase, mockDb } from "@/lib/supabase";
 
+// Simple in-memory IP rate limiter: mapping IP address -> array of timestamps
+const rateLimitMap = new Map<string, number[]>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const oneHourAgo = now - 60 * 60 * 1000;
+  
+  let timestamps = rateLimitMap.get(ip) || [];
+  timestamps = timestamps.filter(t => t > oneHourAgo);
+  
+  if (timestamps.length >= 5) {
+    rateLimitMap.set(ip, timestamps);
+    return false;
+  }
+  
+  timestamps.push(now);
+  rateLimitMap.set(ip, timestamps);
+  return true;
+}
+
+function checkTokenRateLimit(token: string): boolean {
+  if (!(globalThis as any).downloadAttempts) {
+    (globalThis as any).downloadAttempts = new Map<string, number[]>();
+  }
+  const attemptsMap = (globalThis as any).downloadAttempts as Map<string, number[]>;
+  const now = Date.now();
+  const sixtySecondsAgo = now - 60 * 1000;
+  
+  let timestamps = attemptsMap.get(token) || [];
+  timestamps = timestamps.filter(t => t > sixtySecondsAgo);
+  
+  if (timestamps.length >= 5) {
+    attemptsMap.set(token, timestamps);
+    return false;
+  }
+  
+  timestamps.push(now);
+  attemptsMap.set(token, timestamps);
+  return true;
+}
+
 export async function POST(request: Request) {
   try {
-    const { token } = await request.json();
+    const { token } = await request.clone().json().catch(() => ({}));
 
     if (!token) {
       return NextResponse.json({ error: "Secure token hash required." }, { status: 400 });
@@ -58,6 +99,22 @@ export async function POST(request: Request) {
         email: tokenRecord.email,
         expiresAt: tokenRecord.expires_at,
       });
+    }
+
+    // Apply Rate Limiting to actual downloads
+    if (!checkTokenRateLimit(token)) {
+      return NextResponse.json(
+        { error: "Too many download attempts. Maximum of 5 downloads per 60 seconds are allowed for security." },
+        { status: 429 }
+      );
+    }
+
+    const ip = request.headers.get("x-forwarded-for") || request.headers.get("x-real-ip") || "anonymous";
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: "Too many download attempts. Maximum of 5 downloads per hour are allowed for security." },
+        { status: 429 }
+      );
     }
 
     // 3. SECURE LOCK: Immediately invalidate token in database to prevent parallel download race exploits
@@ -124,13 +181,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // Convert Buffer to Base64 to return to landing page safely without cors/streaming issues
-    const base64Data = fileBuffer.toString("base64");
-
-    return NextResponse.json({
-      success: true,
-      fileName,
-      fileDataBase64: base64Data,
+    // Return raw binary Response for streaming download
+    return new Response(new Uint8Array(fileBuffer), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": `attachment; filename="${fileName}"`,
+        "Content-Length": fileBuffer.length.toString(),
+      },
     });
   } catch (error: any) {
     console.error("Secure download API endpoint error:", error);

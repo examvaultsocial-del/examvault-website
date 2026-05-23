@@ -10,78 +10,8 @@ import Footer from "@/app/landingpage/footer";
 import { useCart } from "@/components/providers/CartProvider";
 
 import { allProducts } from "@/lib/products";
-
-// Custom styling helper to render creative, dynamic, color-coded tag badges with contextual inline vector icons
-const getTagStyles = (tag: string) => {
-  const normalized = tag.toLowerCase().trim();
-  
-  if (normalized === "pdf") {
-    return {
-      bgClass: "bg-[#D32F2F]",
-      borderClass: "border-[#B71C1C]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "video") {
-    return {
-      bgClass: "bg-[#D32F2F]",
-      borderClass: "border-[#B71C1C]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "best seller" || normalized === "flagship") {
-    return {
-      bgClass: "bg-[#B59410]",
-      borderClass: "border-[#A37E0B]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "audio book" || normalized === "audiobook") {
-    return {
-      bgClass: "bg-[#137333]",
-      borderClass: "border-[#0F5D29]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
-        </svg>
-      )
-    };
-  }
-  if (normalized === "new arrival" || normalized === "new") {
-    return {
-      bgClass: "bg-[#0066CC]",
-      borderClass: "border-[#0052A3]",
-      icon: (
-        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-        </svg>
-      )
-    };
-  }
-  
-  return {
-    bgClass: "bg-[#4A5568]",
-    borderClass: "border-[#2D3748]",
-    icon: (
-      <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-      </svg>
-    )
-  };
-};
+import { getTagStyles } from "@/lib/tagStyles";
+import { slugify } from "@/lib/utils";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -89,9 +19,43 @@ export default function ProductDetailPage() {
   const { addToCart, setCartOpen } = useCart();
   const [activeTab, setActiveTab] = useState("about");
 
-  const productId = Number(params?.id);
-  // Find product by id, fallback to first if not found
-  const product = allProducts.find(p => p.id === productId) || allProducts[0];
+  const rawId = params?.id;
+  // Find product by id or title slug
+  const product = allProducts.find(p => {
+    if (typeof rawId === "string") {
+      const decodedId = decodeURIComponent(rawId);
+      return String(p.id) === decodedId || slugify(p.title) === decodedId;
+    }
+    return p.id === Number(rawId);
+  });
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col font-sans selection:bg-[#B59410]/30 text-[#2D2D2D]">
+        <Navbar />
+        <main className="flex-grow pt-16 pb-20 flex items-center justify-center">
+          <div className="max-w-md w-full mx-auto px-6 text-center">
+            <div className="relative bg-[#FDFBF7] p-8 border-2 border-[#2D2D2D] rounded-[24px] shadow-sm select-none"
+                 style={{ filter: "url(#heavySketch)" }}>
+              <div className="text-6xl mb-4">🔍</div>
+              <h2 className="text-2xl font-bold font-sketch mb-3 text-[#2D2D2D]">Material Not Found</h2>
+              <p className="text-sm text-[#4A4A4A] leading-relaxed mb-6">
+                The visual notes or mindmaps you are looking for do not exist or have been moved. Let's find another high-yield prep material!
+              </p>
+              <Link 
+                href="/products"
+                className="inline-flex py-3 px-6 bg-[#FFDE4D] hover:bg-[#E6C635] text-[#2D2D2D] border-2 border-[#2D2D2D] font-extrabold rounded-full transition-all shadow-sm items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Back to Catalog</span>
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   const savings = product.originalPrice - product.price;
   const discountPercent = Math.round((savings / product.originalPrice) * 100);
@@ -129,28 +93,56 @@ export default function ProductDetailPage() {
             
             {/* LEFT: Stunning Visual Mockup / Gallery Card */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="relative aspect-[1.45] bg-[#F8F9FA] border-2 border-[#E5E5E5] rounded-[24px] overflow-hidden p-8 flex items-center justify-center shadow-sm">
+              {/* Core 3D Stage Wrapper with Perspective */}
+              <div className="relative aspect-[1.45] bg-[#F8F9FA] border-2 border-[#E5E5E5] rounded-[24px] overflow-hidden p-8 flex items-center justify-center shadow-sm [perspective:1200px] group/detail">
                 
-                {/* Visual notebook layout background */}
-                <Image 
-                  src="/assets/images/placeholder-pdfimage.webp"
-                  alt={product.title}
-                  fill
-                  className="object-contain p-8 drop-shadow-2xl"
-                  priority
-                />
+                {/* 3D Notebook Object */}
+                <div 
+                  className="relative w-[34%] aspect-[3/4.2] bg-[#FDFBF7] shadow-xl transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] [transform-style:preserve-3d] origin-left group-hover/detail:shadow-[20px_25px_30px_rgba(26,26,46,0.15)] group-hover/detail:[transform:rotateY(-24deg)_scale(1.06)_translateY(-8px)]"
+                  style={{
+                    border: '3px solid #B59410',
+                    borderRadius: '6px 14px 14px 6px',
+                    willChange: 'transform'
+                  }}
+                >
+                  <Image 
+                    src="/assets/images/placeholder-pdfimage.webp"
+                    alt={product.title}
+                    fill
+                    className="object-contain p-2 opacity-95 transition-opacity"
+                    priority
+                  />
+                  
+                  {/* Book Spine Highlight & Depth Shadow */}
+                  <div className="absolute inset-y-0 left-0 w-[12%] bg-gradient-to-r from-black/25 via-black/5 to-transparent pointer-events-none z-10" />
+                  <div className="absolute inset-y-0 left-[10%] w-[1px] bg-white/20 pointer-events-none z-10" />
+                  <div className="absolute inset-y-0 left-[11%] w-[1px] bg-black/10 pointer-events-none z-10" />
+                  
+                  {/* Realistic fanning pages on the right edge */}
+                  <div 
+                    className="absolute right-0 top-[2px] bottom-[2px] w-[8px] bg-[#F4EFE0] shadow-inner origin-left transition-all duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+                    style={{
+                      transform: 'rotateY(90deg) translateZ(1px)',
+                      backgroundImage: 'repeating-linear-gradient(90deg, #E5D5A5 0px, #E5D5A5 1px, transparent 1px, transparent 3.5px)',
+                      borderLeft: '1px solid rgba(181, 148, 16, 0.2)',
+                      borderRadius: '0 3px 3px 0'
+                    }}
+                  />
+                </div>
 
                 {/* Styled notebook cover text overlay */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center select-none pointer-events-none">
-                  <span className="text-[11px] tracking-widest uppercase font-extrabold text-[#888]/80 mb-1">
-                    {product.exam.toUpperCase()} PREPARATION
+                <div className="absolute bottom-6 left-6 right-6 flex flex-col items-start select-none pointer-events-none z-20">
+                  <span className="text-[10px] tracking-widest uppercase font-extrabold text-[#888] mb-1">
+                    {product.exam.toUpperCase()} PREP
                   </span>
-                  <h2 className="text-xl md:text-2xl font-bold text-[#1E1B4B] leading-tight px-4 bg-white/50 backdrop-blur-[2px] border border-[#d8d3c9]/40 rounded-lg py-2 line-clamp-3 max-w-[80%] shadow-md">
-                    {product.subject.toUpperCase()}
-                  </h2>
-                  <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#B59410] mt-2 bg-[#FFF9E6] px-2.5 py-0.5 rounded border border-[#FFEBB3]">
-                    {product.format}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-[#2d2d2d] bg-white/95 border border-[#d8d3c9]/60 px-2.5 py-0.5 rounded shadow-sm">
+                      {product.subject.toUpperCase()}
+                    </span>
+                    <span className="text-[9px] uppercase tracking-wider font-extrabold text-[#B59410] bg-[#FFF9E6] px-2.5 py-0.5 rounded border border-[#FFEBB3]">
+                      {product.format}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Visual tags overlay */}

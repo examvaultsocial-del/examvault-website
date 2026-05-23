@@ -11,7 +11,26 @@ export default function Hero() {
       <div className="flex flex-col space-y-6 max-w-2xl lg:max-w-[50%] xl:max-w-2xl text-left z-10 lg:pr-10 lg:pt-0">
         
         {/* Main Header */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.15] tracking-tight relative">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl leading-[1.15] tracking-tight relative pr-8">
+          
+          {/* Top-Right Floating Hand-Drawn Sparkle */}
+          <svg 
+            className="absolute -top-7 right-12 md:right-24 w-8 h-8 text-[#B59410]/80 animate-[pulse_4s_ease-in-out_infinite] pointer-events-none hidden sm:block" 
+            viewBox="0 0 24 24" 
+            fill="currentColor"
+          >
+            <path d="M12 0c.3 4.2 3.8 7.7 8 8-4.2.3-7.7 3.8-8 8-.3-4.2-3.8-7.7-8-8 4.2-.3 7.7-3.8 8-8z" />
+          </svg>
+ 
+          {/* Left-Top Smaller Floating Sparkle */}
+          <svg 
+            className="absolute -left-8 top-12 w-6 h-6 text-[#B59410]/60 animate-[pulse_4s_ease-in-out_infinite] pointer-events-none hidden md:block" 
+            viewBox="0 0 24 24" 
+            fill="currentColor"
+          >
+            <path d="M12 2c.4 5.2 4.8 9.6 10 10-5.2.4-9.6 4.8-10 10-.4-5.2-4.8-9.6-10-10 5.2-.4 9.6-4.8 10-10z" />
+          </svg>
+ 
           <div className="pencil-sketch block">Unlock Your</div>
           <div className="pencil-sketch block mt-1">Success</div>
           <div className="flex flex-wrap items-center gap-3 mt-1">
@@ -22,7 +41,7 @@ export default function Hero() {
             </span>
           </div>
         </h1>
-
+ 
         {/* Subtexts */}
         <div className="space-y-2 pt-1 max-w-[500px]">
           <p className="text-[#2D2D2D] text-base md:text-lg leading-relaxed font-semibold">
@@ -34,7 +53,7 @@ export default function Hero() {
             Everything you need. One trusted vault.
           </p>
         </div>
-
+ 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-4 pt-1">
           <Link href="/products" className="z-10">
@@ -46,7 +65,7 @@ export default function Hero() {
               Explore Products
             </SketchButton>
           </Link>
-          <Link href="/products" className="z-10">
+          <Link href="/coming-soon" className="z-10">
             <SketchButton 
               variant="outline" 
               icon={FileText} 
