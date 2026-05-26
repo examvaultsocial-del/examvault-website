@@ -49,7 +49,7 @@ export const CartDrawer: React.FC = () => {
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.name.trim()) newErrors.name = "Full Name is required";
-    
+
     if (!formData.email.trim()) {
       newErrors.email = "Email Address is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -66,6 +66,34 @@ export const CartDrawer: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleMockPaymentSuccess = async (orderData: any) => {
+    setIsSubmitting(true);
+    try {
+      // For mock mode, directly verify with mock payment data
+      const verifyRes = await fetch("/api/checkout/verify-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          razorpay_order_id: orderData.razorpayOrderId,
+          razorpay_payment_id: `pay_mock_${Date.now()}`,
+          razorpay_signature: `sig_mock_${Math.random().toString(36).substring(7)}`,
+          customer_email: formData.email,
+          is_mock_payment: true,
+        }),
+      });
+
+      const verifyData = await verifyRes.json();
+      if (verifyRes.ok && verifyData.success) {
+        window.location.href = `/checkout/success?orderId=${orderData.orderId}`;
+      } else {
+        throw new Error(verifyData.error || "Payment verification failed");
+      }
+    } catch (err: any) {
+      alert(`Payment verification failed: ${err.message}`);
+      setIsSubmitting(false);
+    }
+  };
+
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -78,11 +106,9 @@ export const CartDrawer: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customer: {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-          },
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
           items: cart.map((item) => ({
             id: item.id,
             title: item.title,
@@ -107,8 +133,8 @@ export const CartDrawer: React.FC = () => {
       }
 
       const options = {
-        key: orderData.razorpayKeyId, // Set dynamic key passed from backend
-        amount: orderData.amount, // Amount in paise/cents
+        key: orderData.keyId, // Set dynamic key passed from backend
+        amount: orderData.amount * 100, // Amount in paise/cents
         currency: "INR",
         name: "ExamVault Store",
         description: `Secure checkout for ${cart.length} study guides`,
@@ -130,10 +156,11 @@ export const CartDrawer: React.FC = () => {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                razorpayOrderId: response.razorpay_order_id,
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpaySignature: response.razorpay_signature,
-                orderId: orderData.orderId, // Internal database order ID
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                customer_email: formData.email,
+                is_mock_payment: orderData.isMock,
               }),
             });
 
@@ -154,9 +181,29 @@ export const CartDrawer: React.FC = () => {
             setIsSubmitting(false);
           },
         },
+        retry: {
+          enabled: true,
+          max_count: 3,
+        },
       };
 
       const rzp = new (window as any).Razorpay(options);
+
+      // Add error handler for Razorpay failures
+      if (typeof rzp.on === 'function') {
+        rzp.on('payment.failed', function(response: any) {
+          console.error("Razorpay payment failed:", response);
+          // For test mode, allow proceeding with mock payment
+          if (orderData.isMock) {
+            alert("Test mode: Proceeding with mock payment verification...");
+            handleMockPaymentSuccess(orderData);
+          } else {
+            alert(`Payment failed: ${response.error?.description || "Unknown error"}`);
+            setIsSubmitting(false);
+          }
+        });
+      }
+
       rzp.open();
 
     } catch (err: any) {
@@ -416,7 +463,52 @@ export const CartDrawer: React.FC = () => {
                       </>
                     )}
                   </button>
-                  
+
+                  {/* Test Payment Button (Development Only) */}
+                  {process.env.NODE_ENV === 'development' && (
+                    <button
+                      type="button"
+                      onClick={async (e) => {
+                        e.preventDefault();
+                        if (!validateForm()) return;
+
+                        setIsSubmitting(true);
+                        try {
+                          const response = await fetch("/api/checkout/create-order", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              name: formData.name,
+                              email: formData.email,
+                              phone: formData.phone,
+                              items: cart.map((item) => ({
+                                id: item.id,
+                                title: item.title,
+                                price: item.price,
+                                format: item.format,
+                                exam: item.exam,
+                              })),
+                            }),
+                          });
+
+                          const orderData = await response.json();
+                          if (!response.ok) {
+                            throw new Error(orderData.error || "Failed to create order");
+                          }
+
+                          await handleMockPaymentSuccess(orderData);
+                        } catch (err: any) {
+                          alert(`Test payment failed: ${err.message}`);
+                          setIsSubmitting(false);
+                        }
+                      }}
+                      disabled={isSubmitting}
+                      className="w-full mt-2 py-2 px-4 font-sketch text-sm font-bold text-[#2D2D2D] bg-[#E8E8E8] border-2 border-[#2D2D2D]/50 rounded-lg hover:bg-[#D8D8D8] transition-all active:scale-95 duration-150 cursor-pointer disabled:opacity-50"
+                    >
+                      🧪 Test Payment (Dev Mode)
+                    </button>
+                  )}
+
                   {/* Trust Footer */}
                   <p className="text-[10px] text-center text-[#8A8A8A] mt-2 font-medium flex items-center justify-center gap-1.5">
                     <Lock className="w-3 h-3 text-[#8A8A8A] shrink-0" />

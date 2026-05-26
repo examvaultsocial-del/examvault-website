@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     let dbOrderId = "";
     let totalSpent = 0;
     let customerName = "Student";
-    const purchasedBooks: { book_id: number; book_title: string }[] = [];
+    const purchasedBooks: { book_id: string | number; book_title: string }[] = [];
 
     if (supabase) {
       // Find the pending order
@@ -132,7 +132,7 @@ export async function POST(request: Request) {
     }
 
     // 3. Issue single-use download tokens
-    const secureTokens: { book_id: number; book_title: string; tokenUrl: string }[] = [];
+    const secureTokens: { book_id: string | number; book_title: string; tokenUrl: string }[] = [];
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     const tokenRecords = purchasedBooks.map((book) => {

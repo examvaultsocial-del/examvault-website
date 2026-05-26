@@ -34,6 +34,11 @@ export const metadata: Metadata = {
     default: "ExamVault - Visual Study Materials for Competitive Exams",
     template: "%s | ExamVault",
   },
+  icons: {
+    icon: "/logo-solid-bg-square.jpeg",
+    shortcut: "/logo-solid-bg-square.jpeg",
+    apple: "/logo-solid-bg-square.jpeg",
+  },
   description:
     "AI-powered visual study materials for Indian competitive exam aspirants. Infographics, PDF notes, and animated videos for UPSC, SSC, Banking & more.",
   keywords: [

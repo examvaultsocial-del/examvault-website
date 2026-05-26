@@ -78,6 +78,7 @@ export async function POST(request: Request) {
     }
 
     // 3. Save transactions in Supabase or MockDb
+    let orderId = "";
     if (supabase) {
       // Create or locate Customer record
       const { data: customer, error: customerErr } = await supabase
@@ -113,6 +114,8 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "Failed to log secure pending order." }, { status: 500 });
       }
 
+      orderId = order.id;
+
       // Record detailed list items
       const itemsToInsert = validatedItems.map((item) => ({
         order_id: order.id,
@@ -138,6 +141,8 @@ export async function POST(request: Request) {
         ip_address: ipAddress || "",
       });
 
+      orderId = order.id;
+
       const itemsToInsert = validatedItems.map((item) => ({
         order_id: order.id,
         ...item,
@@ -148,6 +153,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
+      orderId,
       razorpayOrderId,
       amount: totalAmount,
       currency: "INR",

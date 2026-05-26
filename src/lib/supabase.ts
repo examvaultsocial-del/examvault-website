@@ -53,7 +53,7 @@ export interface MockOrder {
 export interface MockOrderItem {
   id: string;
   order_id: string;
-  book_id: number;
+  book_id: string | number;
   book_title: string;
   price_at_purchase: number;
 }
@@ -61,7 +61,7 @@ export interface MockOrderItem {
 export interface MockDownloadToken {
   id: string;
   order_id: string;
-  book_id: number;
+  book_id: string | number;
   book_title: string;
   token_hash: string;
   email: string;

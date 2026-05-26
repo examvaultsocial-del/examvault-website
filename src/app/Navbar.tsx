@@ -43,9 +43,9 @@ export default function Navbar() {
         <Image
           src="/assets/images/logo-svg.svg"
           alt="ExamVault Logo"
-          width={70}
-          height={70}
-          className="object-contain"
+          width={80}
+          height={80}
+          className="object-contain w-auto h-auto"
         />
       </div>
       <div className="flex flex-col justify-center">

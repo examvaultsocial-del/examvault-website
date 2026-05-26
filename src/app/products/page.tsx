@@ -155,10 +155,15 @@ function ProductsPageContent() {
       return b.price - a.price;
     }
     if (sortBy === "Newest Arrivals") {
-      return b.id - a.id;
+      const idA = typeof a.id === "number" ? a.id : parseFloat(a.id) || 0;
+      const idB = typeof b.id === "number" ? b.id : parseFloat(b.id) || 0;
+      if (idA !== idB) return idB - idA;
+      return String(b.id).localeCompare(String(a.id));
     }
-    // Recommended / default
-    return a.id - b.id;
+    const idA = typeof a.id === "number" ? a.id : parseFloat(a.id) || 0;
+    const idB = typeof b.id === "number" ? b.id : parseFloat(b.id) || 0;
+    if (idA !== idB) return idA - idB;
+    return String(a.id).localeCompare(String(b.id));
   });
 
   // Pagination bounds logic
@@ -228,7 +233,7 @@ function ProductsPageContent() {
                 <span className="text-[#4A4A4A]">All Products</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-sketch text-[#2D2D2D] mb-3">All Study Materials</h1>
-              <p className="text-sm text-[#4A4A4A] max-w-lg">AI-generated visual notes, mind maps & smart study materials for all major competitive exams.</p>
+              <p className="text-sm text-[#4A4A4A] max-w-lg">Smart visual notes, mind maps & premium study materials for all major competitive exams.</p>
             </div>
             
             <div className="flex items-center gap-4">
@@ -625,7 +630,7 @@ function ProductsPageContent() {
                             }}
                           >
                             <Image 
-                              src="/assets/images/placeholder-pdfimage.webp"
+                              src={product.image || "/assets/images/placeholder-pdfimage.webp"}
                               alt={product.title}
                               fill
                               className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
@@ -649,11 +654,13 @@ function ProductsPageContent() {
                           </div>
 
                           {/* Custom notebook text layer for dynamically visual and creative covers */}
-                          <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
-                            <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
-                              {product.subject.toUpperCase()}
-                            </span>
-                          </div>
+                          {product.id !== "JP-PDF-PARENT-AI-V1" && (
+                            <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
+                              <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
+                                {product.subject.toUpperCase()}
+                              </span>
+                            </div>
+                          )}
 
                           {/* Dynamic Overlays on top of the placeholder to make it unique */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -755,7 +762,7 @@ function ProductsPageContent() {
                             }}
                           >
                             <Image 
-                              src="/assets/images/placeholder-pdfimage.webp"
+                              src={product.image || "/assets/images/placeholder-pdfimage.webp"}
                               alt={product.title}
                               fill
                               className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
@@ -779,11 +786,13 @@ function ProductsPageContent() {
                           </div>
 
                           {/* Custom notebook text layer */}
-                          <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
-                            <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
-                              {product.subject.toUpperCase()}
-                            </span>
-                          </div>
+                          {product.id !== "JP-PDF-PARENT-AI-V1" && (
+                            <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
+                              <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
+                                {product.subject.toUpperCase()}
+                              </span>
+                            </div>
+                          )}
 
                           {/* Hover Details Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

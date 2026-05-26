@@ -15,28 +15,14 @@ export default function JuniorFooter() {
         
         {/* Brand Column */}
         <div className="lg:col-span-1 space-y-3">
-          <Link href="/junior" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 flex items-center justify-center">
+          <Link href="/junior" className="flex items-center group">
+            <div className="relative w-48 h-12">
               <Image
-                src="/assets/images/logo-svg.svg"
-                alt="ExamVault Logo"
-                width={38}
-                height={38}
-                className="object-contain"
+                src="/assets/images/logos-jr/full-typo.svg"
+                alt="ExamVault Junior Logo"
+                fill
+                className="object-contain object-left"
               />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-baseline gap-0.5">
-                <span className="text-xl font-sketch leading-none text-[#2D2D2D]">
-                  ExamVault
-                </span>
-                <span className="text-sm font-sketch text-[#B59410] leading-none">
-                  Jr
-                </span>
-              </div>
-              <span className="text-[7px] uppercase tracking-[0.15em] font-bold text-[#444] mt-0.5 opacity-80">
-                Curious Minds. Bright Futures.
-              </span>
             </div>
           </Link>
           

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import JuniorNavbar from "@/app/JuniorNavbar";
 import Footer from "@/app/landingpage/footer";
 import SketchButton from "@/components/SketchButton";
 
-export default function JuniorComingSoonPage() {
+function JuniorComingSoonContent() {
   const searchParams = useSearchParams();
   const rawFeature = searchParams.get("feature");
   const feature = rawFeature ? decodeURIComponent(rawFeature) : "Courses";
@@ -220,5 +220,13 @@ export default function JuniorComingSoonPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function JuniorComingSoonPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <JuniorComingSoonContent />
+    </Suspense>
   );
 }

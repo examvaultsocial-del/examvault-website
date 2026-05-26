@@ -28,28 +28,25 @@ export default function JuniorNavbar() {
   ];
 
   const logo = (
-    <Link href="/junior" className="flex items-center gap-2 group cursor-pointer">
-      <div className="relative w-16 h-16 flex items-center justify-center">
+    <Link href="/junior" className="flex items-center gap-3 group cursor-pointer">
+      <div className="relative w-24 h-24 shrink-0">
         <Image
-          src="/assets/images/logo-svg.svg"
+          src="/assets/images/logos-jr/logo.svg"
           alt="ExamVault Junior Logo"
-          width={56}
-          height={56}
+          fill
           className="object-contain"
+          priority
         />
       </div>
       <div className="flex flex-col justify-center">
-        <div className="flex items-baseline gap-1">
-          <span className="text-2xl font-sketch leading-none tracking-tight text-[#2D2D2D]">
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-3xl font-sketch leading-none tracking-tight text-[#2D2D2D]">
             ExamVault
           </span>
-          <span className="text-lg font-sketch text-[#B59410] leading-none">
+          <span className="text-xl font-sketch text-[#B59410] leading-none">
             Junior
           </span>
         </div>
-        <span className="text-[8px] uppercase tracking-[0.15em] font-bold text-[#444] mt-1 opacity-90">
-          Curious Minds. Bright Futures.
-        </span>
       </div>
     </Link>
   );

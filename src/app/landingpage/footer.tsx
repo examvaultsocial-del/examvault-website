@@ -99,12 +99,22 @@ export default function Footer() {
 
         {/* Support Column */}
         <div className="space-y-2 lg:border-l lg:border-[#B59410]/10 lg:pl-6">
-          <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#1A1A2E]">Support</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#1A1A2E]">
+            <Link href="/support" className="hover:text-[#B59410] transition-colors duration-200">
+              Support
+            </Link>
+          </h4>
           <ul className="space-y-0.5">
-            {['Help Center', 'Contact Us', 'Refund Policy', 'Terms & Conditions', 'Privacy Policy'].map((item) => (
-              <li key={item}>
-                <Link href="#" className="text-[13px] text-[#4A4A4A] hover:text-[#B59410] transition-colors duration-200 font-medium">
-                  {item}
+            {[
+              { name: 'Help Center', href: '/help-center' },
+              { name: 'Contact Us', href: '/contact' },
+              { name: 'Refund Policy', href: '/refund-policy' },
+              { name: 'Terms & Conditions', href: '/terms-conditions' },
+              { name: 'Privacy Policy', href: '/privacy-policy' },
+            ].map((item) => (
+              <li key={item.name}>
+                <Link href={item.href} className="text-[13px] text-[#4A4A4A] hover:text-[#B59410] transition-colors duration-200 font-medium">
+                  {item.name}
                 </Link>
               </li>
             ))}

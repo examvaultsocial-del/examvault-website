@@ -142,10 +142,15 @@ function JuniorProductsPageContent() {
       return b.price - a.price;
     }
     if (sortBy === "Newest Arrivals") {
-      return b.id - a.id;
+      const idA = typeof a.id === "number" ? a.id : parseFloat(a.id) || 0;
+      const idB = typeof b.id === "number" ? b.id : parseFloat(b.id) || 0;
+      if (idA !== idB) return idB - idA;
+      return String(b.id).localeCompare(String(a.id));
     }
-    // Recommended / default
-    return a.id - b.id;
+    const idA = typeof a.id === "number" ? a.id : parseFloat(a.id) || 0;
+    const idB = typeof b.id === "number" ? b.id : parseFloat(b.id) || 0;
+    if (idA !== idB) return idA - idB;
+    return String(a.id).localeCompare(String(b.id));
   });
 
   // Pagination bounds logic
@@ -486,7 +491,7 @@ function JuniorProductsPageContent() {
                             }}
                           >
                             <Image
-                              src="/assets/images/placeholder-pdfimage.webp"
+                              src={product.image || "/assets/images/placeholder-pdfimage.webp"}
                               alt={product.title}
                               fill
                               className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
@@ -510,11 +515,13 @@ function JuniorProductsPageContent() {
                           </div>
 
                           {/* Custom notebook text layer */}
-                          <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
-                            <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
-                              {product.subject.toUpperCase()}
-                            </span>
-                          </div>
+                          {product.id !== "JP-PDF-PARENT-AI-V1" && (
+                            <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
+                              <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
+                                {product.subject.toUpperCase()}
+                              </span>
+                            </div>
+                          )}
 
                           {/* Dynamic Overlays on top of the placeholder */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -617,7 +624,7 @@ function JuniorProductsPageContent() {
                             }}
                           >
                             <Image
-                              src="/assets/images/placeholder-pdfimage.webp"
+                              src={product.image || "/assets/images/placeholder-pdfimage.webp"}
                               alt={product.title}
                               fill
                               className="object-contain p-1 opacity-95 group-hover:opacity-100 transition-opacity"
@@ -641,11 +648,13 @@ function JuniorProductsPageContent() {
                           </div>
 
                           {/* Custom notebook text layer */}
-                          <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
-                            <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
-                              {product.subject.toUpperCase()}
-                            </span>
-                          </div>
+                          {product.id !== "JP-PDF-PARENT-AI-V1" && (
+                            <div className="absolute inset-x-0 bottom-2.5 flex flex-col items-center justify-center p-2.5 text-center select-none pointer-events-none z-20">
+                              <span className="text-[8px] font-bold text-[#2d2d2d] leading-snug px-1.5 py-0.5 bg-white/80 border border-[#d8d3c9]/60 rounded shadow-sm max-w-[85%] truncate">
+                                {product.subject.toUpperCase()}
+                              </span>
+                            </div>
+                          )}
 
                           {/* Hover Details Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

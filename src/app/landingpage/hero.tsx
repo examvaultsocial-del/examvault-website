@@ -45,7 +45,7 @@ export default function Hero() {
         {/* Subtexts */}
         <div className="space-y-2 pt-1 max-w-[500px]">
           <p className="text-[#2D2D2D] text-base md:text-lg leading-relaxed font-semibold">
-            AI-generated visual notes, mind maps, and smart
+            Smart visual notes, interactive mind maps, and
             study materials for UPSC and all major
             competitive exams.
           </p>

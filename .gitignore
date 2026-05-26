@@ -46,3 +46,11 @@ next-env.d.ts
 # unoptimized original heavy asset files
 public/assets/images/*.png
 public/graphite_pencil_texture.png
+
+# IDEs and Editors
+.vscode/
+.idea/
+
+# System Files
+Thumbs.db
+desktop.ini
